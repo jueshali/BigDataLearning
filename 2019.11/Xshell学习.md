@@ -145,3 +145,77 @@ do
 done
 echo "1到100的和是:$sum"
 ```
+
+## 常用函数
+
+read -p "请输入你的参数" -t 10 NUM , 提示输入
+
+basename 基本语法 basename[string/pathname][suffix] 获取基本名,去掉路径
+
+dirname 基本语法 dirname[string/pathname][suffix] 获取路径
+
+## 自定义函数
+
+```bash
+#!/bin/bash
+# 自定义函数基本语法,返回值如果是0则运行成功
+function funname[()]
+{
+
+    Action;
+
+    [return int;]
+
+}
+```
+
+```bash
+#!/bin/bash
+# 一个求和函数,返回值如果是0则运行成功
+function add[()]
+{
+
+    result=$[$1+$2]
+    echo "$result"
+
+}
+read -p "请输入第一个参数" NUM1
+read -p "请输入第二个参数" NUM2
+add $NUM1 $NUM2
+```
+
+## SHELL 工具
+
+### wc
+
+用法：wc filename
+
+参数有-w统计单词数，-l行数，-c字节数.
+
+### cut
+
+用法：cut filename
+
+-f fileds, 提取第几列
+-d descriptor 按照指定分隔符分割列
+
+echo $PATH | cut $PATH  -d : -f 1,4-7
+
+### sed
+
+用法：sed [选项参数] 'command'   filename
+
+sed '2a nihao' filename 在第二行插入你好
+sed '/wo/ d' filename   删除wo
+在sed中用','连接连续的数字，$表示最后一行，^表示第一行
+
+sed 's/wo/ni/g' sed.txt
+加上g全局替换。
+
+需要同时进行多个动作时需要加入-e
+
+### sort
+
+用法：sort filename
+sort filename
+-n 按数值排序， -k 3 按第三列排 -u 去重 -r 逆序
