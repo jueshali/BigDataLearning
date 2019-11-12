@@ -1,0 +1,5 @@
+lpc1234
+ip 192.168.2.241~192.168.2.244
+namenode hadoop101
+2nn hadoop103
+mr  hadoop102
