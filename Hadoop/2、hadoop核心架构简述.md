@@ -55,4 +55,4 @@ MapReduce是一个编程模型，按照这一编程模型编写的程序被称�
 每个Job在启动时，会先启动一个MRAppMaster进程，由此进程和YARN进行资源的申请！
 YARN在收到每个Job需要启动N个Task的申请后，让NM进程来领取任务，领取后为每个Task分配计算资源！
 分配计算资源时，为了保证每个Task计算资源在当前Task使用期间，不被其他的Task所抢占，
-需要将每个Task所已经分配的计算资源进行隔离，NM会使用Container对Task的计算资源进行封装，封装后的资源，暂时被冻结，其他Task无法使用。（资源主要时HDFS的磁盘资源和Yarn的Cpu资源）
+需要将每个Task所已经分配的计算资源进行隔离，NM会使用Container对Task的计算资源进行封装，封装后的资源，暂时被冻结，其他Task无法使用。（资源主要是HDFS的磁盘资源和Yarn的Cpu资源）
