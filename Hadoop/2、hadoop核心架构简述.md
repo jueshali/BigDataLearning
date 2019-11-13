@@ -27,13 +27,13 @@ Yarn负责集群计算资源的调度！
 Yarn的运行需要由不同角色的进程一起启动后组成
 Yarn由ResourceManager和NodeManager组成
 
-### ResourceManager
+### ResourceManager(1个)
 
 1. 负责接收客户端提交的job
 2. 负责整个集群所有计算资源的管理和调度
 3. 负责与NM进行通信，分配任务等。
 
-### NodeManager
+### NodeManager（n个）
 
 1. 负责当前所运行的机器所拥有的计算资源的管理和调度
 2. 定期和RM进行通信，上报资源的使用情况

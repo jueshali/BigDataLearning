@@ -219,3 +219,19 @@ sed 's/wo/ni/g' sed.txt
 用法：sort filename
 sort filename
 -n 按数值排序， -k 3 按第三列排 -u 去重 -r 逆序
+
+## AWK（自有语法）
+
+用法 [选项参数] 'pattern{action1} pattern2{action2}...' filename\
+pattern：表示AWK在数据查找的内容，就是匹配模式 -F指定分隔符， -v赋值一个用户的自定义变量\
+action: 在找到匹配内容时所执行的一系列命令\
+print 表示输出
+$1 $2 表示第一行第二行
+awk -F : '/^root/ {print $1 "," $7}' /etc/passwd
+-v定义一个用户变量
+显示以root开头的行的第一列和第七列\
+定义了关键字 BEGIN:代表一个初始化方法\
+END代表一个结束方法\
+FILENAME:文件名\
+NR:行数\
+NF:列数

@@ -1,8 +1,4 @@
 #!/bin/bash
-
-function test[()]
-{
-
 if (($#!=1));then
 echo one para!;
 exit;
