@@ -296,6 +296,106 @@ public static boolean copy(FileSystem srcFS, FileStatus srcStatus,
 
 ### HDFS文件信息的查看
 
-在HDFS中，文件的元数据包括文件长度，块大小，复本，修改时间，所有者和权限信息，这些信息封装在FileStatus之中。
+在HDFS中，文件的元数据包括文件长度，块大小，复本，修改时间，所有者和权限信息，这些信息封装在FileStatus对象之中。该对象可以通过`FileSystem.getFileStatus()`获得。获得一个目录下的所有文件使用`fs.listStatus(dir)`我的代码为打印两层目录，可以使用递归扩展
 
+```java
+ public void Status() throws Exception{
+        // 查看文件的信息
+        Path dir = new Path("/user/Administrator/jdk.gz");
+        FileStatus fileStatus = fs.getFileStatus(dir);
+        System.out.println("是否文件夹："+ fileStatus.isDirectory());
+        System.out.println("长度是"+fileStatus.getLen());
+        System.out.println("块大小是"+fileStatus.getBlockSize());
+        //获取文件名
+        System.out.println("文件名是"+fileStatus.getPath().getName());
+    }
 
+    @Test
+    public void blockStatus() throws Exception{
+        Path dir = new Path("/user/Administrator/jdk.gz");
+        LocatedFileStatus status;
+        //调用listLocatedStatus方法会返回一个迭代器，迭代器中的存的就是LocatedFileStatus对象；
+        RemoteIterator<LocatedFileStatus> statuss =   fs.listLocatedStatus(dir);
+        while (statuss.hasNext()){
+            status = statuss.next();
+
+            BlockLocation[] blockLocations = status.getBlockLocations();
+            for (BlockLocation blockLocation:blockLocations) {
+                System.out.println(blockLocation);
+            }
+            System.out.println(status.isDirectory()?"是目录":"不是目录");
+        }
+    }
+
+      public void Statuss() throws Exception{
+        Path dir = new Path("/hadoopday2");
+        FileStatus[] fileStatusess = fs.listStatus(dir);
+        for (FileStatus filestatus :
+                fileStatusess) {
+            System.out.println(filestatus.getPath().getName());
+            if(filestatus.isDirectory()){
+                Path nextDir = filestatus.getPath();
+                FileStatus[] nextFileStatusess = fs.listStatus(nextDir);
+                for (FileStatus nextFilestatus :
+                        nextFileStatusess) {
+                    System.out.println("----"+nextFilestatus.getPath().getName());
+                }
+            }
+        }
+
+    }
+
+```
+
+### HDFS块信息的处理
+
+块和备份我认识HDFS文件系统中及其重要的一部分，通过listLocatedStatus可以获取block列表的迭代器，`BlockLocation`对象中主要存储块所在的位置，大小，偏移量等。
+
+```java
+    @Test
+    public void blockStatus() throws Exception{
+        Path dir = new Path("/user/Administrator/jdk.gz");
+        LocatedFileStatus status;
+        RemoteIterator<LocatedFileStatus> statuss =   fs.listLocatedStatus(dir);
+        while (statuss.hasNext()){
+            status = statuss.next();
+
+            BlockLocation[] blockLocations = status.getBlockLocations();
+            for (BlockLocation blockLocation:blockLocations) {
+                System.out.println(blockLocation);
+            }
+            System.out.println(status.isDirectory()?"是目录":"不是目录");
+        }
+    }
+```
+
+### 练习，HDFS的分块下载
+
+```java
+ public void downWithBlock() throws Exception{
+        Path src = new Path("jdk.gz");
+        String basic = "H:/block";
+        in = fs.open(src);
+        byte[] buffer = new byte[1024];
+        //获取块大小，
+        long offset=  fs.getFileStatus(src).getBlockSize();
+        //获取块数量
+        int blockNum = fs.listLocatedStatus(src).next().getBlockLocations().length;
+
+        System.out.println(offset + "" + blockNum);
+
+        for (int i = 0; i < blockNum; i++) {
+            in.seek(i*offset);
+            Path des = new Path(basic+i);
+            out = fsLocal.create(des);
+            if (i==blockNum-1){
+                IOUtils.copyBytes(in,out,1024);
+            }else{
+                for (int j = 0;j < (int)offset/1024;j++){
+                    in.read(buffer);
+                    out.write(buffer);
+                }
+            }
+        }
+    }
+```
