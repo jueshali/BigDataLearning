@@ -55,6 +55,15 @@ layoutVersion=-56
 
 ### NN的多目录配置
 
+由于NN中的数据过于重要，所以可以在NN的多块磁盘上对NN中的数据进行配置。值得注意的是多个目录之间存储的数据完全一致，并且在配置文件中的第一个目录坏了后，需要将其他目录提取到前面。因为NN启动时默认读第一个目录。
+在hdfs-site.xml中配置
+
+```xml
+<property>
+    <name>dfs.namenode.name.dir</name>
+<value>dir1,dir2,dir3</value>
+</property>
+```
 
 ## 2NN
 
@@ -83,5 +92,50 @@ dfs.namenode.checkpoint.check.period=60s\
 
 将2NN,namesecondary中的current复制到NN下的name下就行
 
-
 ## DN
+
+### DN的启动
+
+1. DN启动后首先向NN根据clusterID进行注册，
+2. 注册成功后，以后每1小时上报所有的块信息
+3. 每三秒ping以下NN，
+4. 如果NN十分钟30秒没有收到DN的心跳，则认为DN坏了。
+
+```java
+TimeOut = 2 * dfs.namenode.heartbeat.recheck-interval + 10 * dfs.heartbeat.interval，
+// 而默认的recheck-interval为5min，dfs.heartbeat.interval默认为3s.
+```
+
+### 服役新节点
+
+1. 配置host和hosts还有本机ip
+2. 配置好ssh
+3. 分发hadoop和java
+4. 如果hadoop中有上个文件的logs信息，要删除
+5. 启动DataNode.即可关联到集群
+
+### 白名单配置
+
+设置白名单后，只有白名单之上的主机才能注册。在NN运行的机器执行代码
+
+```xml
+<property>
+<name>dfs.hosts</name>
+<value>文件路径</value>
+</property>
+```
+
+重启NN或执行`hdfs dfsadmin -refreshNodes`
+
+### 黑名单配置
+
+在配置进入黑名单后，会交接工作。
+
+```xml
+<property>
+<name>dfs.hosts.exclude</name>
+      <value>/opt/module/hadoop-2.7.2/etc/hadoop/dfs.hosts.exclude</value>
+</property>
+```
+
+### DN的多目录机制
