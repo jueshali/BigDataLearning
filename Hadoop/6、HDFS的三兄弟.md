@@ -4,7 +4,7 @@
 
 ## NN
 
-NN负责对HDFS上的元数据进行管理，在NN中保存有最重要的两份信息，一是文件由哪些块组成（filename->blocksequence (namespace))。二是每个块存在哪个位置)（block->machinelist("inodes"))。除次之外还有文件名，上传者，上传时间等非关键信息。元数据在磁盘中存储在fsimage之中. 
+NN负责对HDFS上的元数据进行管理，在NN中保存有最重要的两份信息，一是文件由哪些块组成（filename->blocksequence (namespace))。二是每个块存在哪个位置)（block->machinelist("inodes"))。除次之外还有文件名，上传者，上传时间等非关键信息。元数据在磁盘中存储在fsimage之中.
 
 ### NN的持久化
 
@@ -139,3 +139,30 @@ TimeOut = 2 * dfs.namenode.heartbeat.recheck-interval + 10 * dfs.heartbeat.inter
 ```
 
 ### DN的多目录机制
+
+```xml
+<property>
+        <name>dfs.datanode.data.dir</name>
+<value>file:///${hadoop.tmp.dir}/dfs/data1,file:///${hadoop.tmp.dir}/dfs/data2</value>
+</property>
+```
+
+修改配置文件即可，与NN的多目录不同，DN的多目录中存储的文件不是一致的，偏向于实现负载均衡。
+
+## HDFS2.X新特性
+
+### 集群复制
+
+集群复制`hadoop distcp 集群1 集群2`
+
+### 归档
+
+HDFS存档：归档是文件数量上的变化，压缩是体积上的变化。归档时可以顺便压缩
+
+在线归档就是一个mapreduce。
+
+`hadoop archive -archiveName hi.har -p  / hi hi2 hi3 hi4 /` -p后加目录，最后是输出目录，归档不删除原文件。
+使用archive归档的文件一般命名为 XX.har
+
+解归档：`hadoop fs -ls har:///hi.har`查看  
+`hadoop fs -cp har:///hi.har /dehar`
