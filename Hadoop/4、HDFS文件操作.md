@@ -39,7 +39,7 @@
 
 - 过小
 
-1. ：最直接的影响就是会增加NN的负担，NN中存储数据的元数据，过小的块会导致块的数量激增，NN需要处理的元数据信息过多，服役能力下降。元数据信息有（权限信息 Last Modified Replication Block SizeN ame -rw-r--r-- jueshali supergroup 273.81 MB tiem 备份数 文件大小 文件名），还有就是每一块在哪台机器上。
+1. ：最直接的影响就是会增加NN的负担，NN中存储数据的元数据，过小的块会导致块的数量激增，NN需要处理的元数据信息过多（元数据会被加载到内存之中），服役能力下降。元数据信息有（权限信息 Last Modified Replication Block SizeN ame -rw-r--r-- jueshali supergroup 273.81 MB tiem 备份数 文件大小 文件名），还有就是每一块在哪台机器上。
 2. ：块太小，每次读取一个块都要一定的寻址时间，效率低。
 
 - ps hadoop不适合存储小文件
@@ -164,7 +164,7 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 ```java
     @Before
     public void init() throws IOException {
-        // 在创建时会读取配置文件，配置文件不只一个，读取顺序为（1）客户端代码中设置的值 >（2）ClassPath下的用户自定义配置文件 >（3）然后是服务器的默认配置
+        // 在创建时会读取配置文件，配置文件不只一个，读取顺序为（1）客户端代码中设置的值 >（2）ClassPath下的用户自定义配置文件 >（3）然后是服务器的默认配置。所有参数都是客户端指定的
         Configuration conf = new Configuration();
         //这里设置fs.defaultFS的值为hdfs。后面的没设置就是默认的本地文件系统，
         conf.set("fs.defaultFS","hdfs://hadoop101:9000");
@@ -399,3 +399,5 @@ public static boolean copy(FileSystem srcFS, FileStatus srcStatus,
         }
     }
 ```
+
+分块下载后合并`type fileB >> fileB`将B合并到A
