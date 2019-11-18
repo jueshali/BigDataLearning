@@ -1,5 +1,13 @@
 # InputFormat
 
+- [InputFormat](#inputformat)
+  - [FileInputFormat切片分析](#fileinputformat%e5%88%87%e7%89%87%e5%88%86%e6%9e%90)
+    - [FileInputFormat默认切片策略](#fileinputformat%e9%bb%98%e8%ae%a4%e5%88%87%e7%89%87%e7%ad%96%e7%95%a5)
+    - [TextInputFormat](#textinputformat)
+    - [KeyValueInputFormat](#keyvalueinputformat)
+    - [NLineInputFormat](#nlineinputformat)
+    - [CombineTextInputFormat](#combinetextinputformat)
+
 ## FileInputFormat切片分析
 
 FileInputFormat是所有使用文件作为数据源的InputFormat实现的基类。一个是用于指出job文件的输入路径，一个是为输出文件生成分片的代码实现。
@@ -65,5 +73,37 @@ ArrayList<FileSplit> splits = new ArrayList<FileSplit>(numSplits);
   }
 ```
 
-### CombineInputFormat切片分析
+### TextInputFormat
+
+切片：采用父类切片策略。
+RecordReader：采用LineRecorder，读取一行作为一个key-value.key是改行的偏移量，Text是改行的内容。
+
+### KeyValueInputFormat
+
+切片：默认的切片策略！
+RecordReader:  KeyValueLineRecordReader ： 读取一行，使用分隔符分割每行，封装key-value
+Text Key: 分隔符前内容
+Text value: 分隔符后的内容
+
+### NLineInputFormat
+
+切片： 以文件为单位，切分文件的mapreduce.input.lineinputformat.linespermap行(如果没有指定，默认为1)作为一个切片！
+RecordReader:   LineRecordReader ： 读取一行作为一个key-value
+LongWritable key: 每行的偏移量
+Text value:  每行的内容
+适合宽行数据的处理！(一次切几行增加并行度)
+
+### CombineTextInputFormat
+
+CombineTextInputFormat可以将多个小文件合并到一个切片中处理！主要是为了解决小文件过多的问题，决定哪些块放在一起时，CombineTextInputFormat也会考虑节点和机架的因素。
+设置一个参数，每片的大小mapreduce.input.fileinputformat.split.maxsiz（maxSize）
+
+切片策略：
+
+（a）判断虚拟存储的文件大小是否大于setMaxInputSplitSize值，大于等于则单独形成一个切片。\
+（b）如果不大于则跟下一个虚拟存储文件进行合并，共同形成一个切片。\
+（c）测试举例：有4个小文件大小分别为1.7M、5.1M、3.4M以及6.8M这四个小文件，则虚拟存储之后形成6个文件块，大小分别为：
+1.7M，（2.55M、2.55M），3.4M以及（3.4M、3.4M）
+最终会形成3个切片，大小分别为：
+（1.7+2.55）M，（2.55+3.4）M，（3.4+3.4）M
 
