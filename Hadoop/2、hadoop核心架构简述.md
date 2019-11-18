@@ -1,5 +1,16 @@
 # Hadoop核心架构简述
 
+- [Hadoop核心架构简述](#hadoop%e6%a0%b8%e5%bf%83%e6%9e%b6%e6%9e%84%e7%ae%80%e8%bf%b0)
+  - [HDFS](#hdfs)
+    - [Namenode(1个)](#namenode1%e4%b8%aa)
+    - [Datanode（n个）](#datanoden%e4%b8%aa)
+  - [Yarn](#yarn)
+    - [ResourceManager(1个)](#resourcemanager1%e4%b8%aa)
+    - [NodeManager（n个）](#nodemanagern%e4%b8%aa)
+  - [MapReduce](#mapreduce)
+    - [Map阶段](#map%e9%98%b6%e6%ae%b5)
+    - [Reduce阶段](#reduce%e9%98%b6%e6%ae%b5)
+
 ## HDFS
 
 HDFS负责大数据文件的读写！

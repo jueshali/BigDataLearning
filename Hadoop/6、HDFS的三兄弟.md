@@ -1,5 +1,25 @@
 # HDFS三兄弟（NN,DN,2NN）
 
+- [HDFS三兄弟（NN,DN,2NN）](#hdfs%e4%b8%89%e5%85%84%e5%bc%9fnndn2nn)
+  - [NN](#nn)
+    - [NN的持久化](#nn%e7%9a%84%e6%8c%81%e4%b9%85%e5%8c%96)
+    - [NN的启动](#nn%e7%9a%84%e5%90%af%e5%8a%a8)
+    - [查看edits和fsimage文件](#%e6%9f%a5%e7%9c%8bedits%e5%92%8cfsimage%e6%96%87%e4%bb%b6)
+    - [NN和DN进行通信](#nn%e5%92%8cdn%e8%bf%9b%e8%a1%8c%e9%80%9a%e4%bf%a1)
+    - [NN的多目录配置](#nn%e7%9a%84%e5%a4%9a%e7%9b%ae%e5%bd%95%e9%85%8d%e7%bd%ae)
+  - [2NN](#2nn)
+    - [2NN的辅助作用](#2nn%e7%9a%84%e8%be%85%e5%8a%a9%e4%bd%9c%e7%94%a8)
+    - [使用2NN对NN进行恢复](#%e4%bd%bf%e7%94%a82nn%e5%af%b9nn%e8%bf%9b%e8%a1%8c%e6%81%a2%e5%a4%8d)
+  - [DN](#dn)
+    - [DN的启动](#dn%e7%9a%84%e5%90%af%e5%8a%a8)
+    - [服役新节点](#%e6%9c%8d%e5%bd%b9%e6%96%b0%e8%8a%82%e7%82%b9)
+    - [白名单配置](#%e7%99%bd%e5%90%8d%e5%8d%95%e9%85%8d%e7%bd%ae)
+    - [黑名单配置](#%e9%bb%91%e5%90%8d%e5%8d%95%e9%85%8d%e7%bd%ae)
+    - [DN的多目录机制](#dn%e7%9a%84%e5%a4%9a%e7%9b%ae%e5%bd%95%e6%9c%ba%e5%88%b6)
+  - [HDFS2.X新特性](#hdfs2x%e6%96%b0%e7%89%b9%e6%80%a7)
+    - [集群复制](#%e9%9b%86%e7%be%a4%e5%a4%8d%e5%88%b6)
+    - [归档](#%e5%bd%92%e6%a1%a3)
+
 三兄弟叫起来比较顺口，实际来说者三者之间的关系更像，老板，秘书和工人
 
 ## NN

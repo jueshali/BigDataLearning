@@ -1,5 +1,18 @@
 # HDFS
 
+- [HDFS](#hdfs)
+  - [什么是HDFS](#%e4%bb%80%e4%b9%88%e6%98%afhdfs)
+  - [HDFS文件的块](#hdfs%e6%96%87%e4%bb%b6%e7%9a%84%e5%9d%97)
+    - [为什么是128m](#%e4%b8%ba%e4%bb%80%e4%b9%88%e6%98%af128m)
+  - [HDFS的Shell操作](#hdfs%e7%9a%84shell%e6%93%8d%e4%bd%9c)
+  - [HDFS的java程序进行操作](#hdfs%e7%9a%84java%e7%a8%8b%e5%ba%8f%e8%bf%9b%e8%a1%8c%e6%93%8d%e4%bd%9c)
+    - [HDFS初始操作和结束操作](#hdfs%e5%88%9d%e5%a7%8b%e6%93%8d%e4%bd%9c%e5%92%8c%e7%bb%93%e6%9d%9f%e6%93%8d%e4%bd%9c)
+    - [HDFS文件上传和下载](#hdfs%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0%e5%92%8c%e4%b8%8b%e8%bd%bd)
+    - [通过流进行可操作的文件上传和下载](#%e9%80%9a%e8%bf%87%e6%b5%81%e8%bf%9b%e8%a1%8c%e5%8f%af%e6%93%8d%e4%bd%9c%e7%9a%84%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0%e5%92%8c%e4%b8%8b%e8%bd%bd)
+    - [HDFS文件信息的查看](#hdfs%e6%96%87%e4%bb%b6%e4%bf%a1%e6%81%af%e7%9a%84%e6%9f%a5%e7%9c%8b)
+    - [HDFS块信息的处理](#hdfs%e5%9d%97%e4%bf%a1%e6%81%af%e7%9a%84%e5%a4%84%e7%90%86)
+    - [练习，HDFS的分块下载](#%e7%bb%83%e4%b9%a0hdfs%e7%9a%84%e5%88%86%e5%9d%97%e4%b8%8b%e8%bd%bd)
+
 ## 什么是HDFS
 
 它是一个**分布式文件系统**，适合一次写入多次读出。

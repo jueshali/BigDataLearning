@@ -1,5 +1,12 @@
 # Hadoop前言
 
+- [Hadoop前言](#hadoop%e5%89%8d%e8%a8%80)
+  - [大数据](#%e5%a4%a7%e6%95%b0%e6%8d%ae)
+  - [Hadoop](#hadoop)
+    - [是什么](#%e6%98%af%e4%bb%80%e4%b9%88)
+    - [有什么优势](#%e6%9c%89%e4%bb%80%e4%b9%88%e4%bc%98%e5%8a%bf)
+    - [Hadoop1.x 和 hadoop2.x的区别](#hadoop1x-%e5%92%8c-hadoop2x%e7%9a%84%e5%8c%ba%e5%88%ab)
+  
 ## 大数据
 
 大数据指在规定的时间内使用常规软件无法处理的数据集！它具有数据集通常有以下特点：
