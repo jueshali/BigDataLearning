@@ -9,7 +9,11 @@
   - [ReduceTask](#reducetask)
     - [Copy](#copy)
     - [Sort and Merge](#sort-and-merge)
-    - [Reduce&Write.](#reducewrite)
+    - [Reduce&Write](#reducewrite)
+  - [一个简单的wordCount](#%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84wordcount)
+    - [mapper](#mapper)
+    - [reducer](#reducer)
+    - [Driver](#driver)
 
 ## MapReduce图解
 
@@ -41,6 +45,90 @@ Copy：执行Reduce的节点通过Copy拉取mapTask处理后的生成的文件�
 
 一个Reduce在将所有的所有的Map处理的数据copy过来后，要做两件事一是将所有需要的key-value合并，二是对合并的数据进行排序。合并不必多说，排序的原因在于一个reduce要对相同的key的key-value进行操作，所以通过排序就可以让有Key相同的在同一位置，这样就实现了一次简单的分组。
 
-### Reduce&Write.
+### Reduce&Write
 
 Reduce按照用户编写的逻辑一次对具有相同key的所有key-value进行操作。操作后写出到磁盘或者hdfs上。
+
+## 一个简单的wordCount
+
+对于hadoop来说，wordCount就如同一个helloWorld。写了wordCount后，hadoop的正式开始~
+
+### mapper
+
+重要的是`<LongWritable,Text,Text,IntWritable>`泛型要写对，第一二个来自于InputFormat,这个需要由需求来定,第三四个取决于代码的编写逻辑。
+
+```java
+public class wordCountMapper extends Mapper<LongWritable,Text,Text,IntWritable> {
+
+    private Text outKey = new Text();
+    private IntWritable outValue = new IntWritable(1);
+
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
+        String[] words = value.toString().split(" ");
+        for (String word : words) {
+            outKey.set(word);
+            context.write(outKey,outValue);
+        }
+
+    }
+}
+```
+
+### reducer
+
+从代码上说不难
+
+```java
+public class wordCountReducer extends Reducer<Text,IntWritable,Text,IntWritable> {
+
+    private int sum;
+
+    @Override
+    protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+        sum = 0;
+        for (IntWritable value : values) {
+            sum=sum+1;
+        }
+        context.write(key,new IntWritable(sum));
+    }
+}
+```
+
+### Driver
+
+套路写法不难，注意的是所有的配置都要写在`job.waitForCompletion(true);`之前。不然会报State为Running的异常。
+
+```java
+public class wordCountDriver {
+    public static void main (String[] args) throws Exception{
+        Configuration conf = new Configuration();
+        conf.set("fs.defaultFS","hdfs://hadoop101:9000");
+
+        FileSystem fs = FileSystem.get(conf);
+
+        Path inputPath = new Path("/HDFS.txt");
+        Path outputPath = new Path("/output1");
+
+        if(fs.exists(outputPath)){
+            fs.delete(outputPath,true);
+        }
+        Job job = Job.getInstance(conf,"wc");
+        job.setMapperClass(wordCountMapper.class);
+        job.setReducerClass(wordCountReducer.class);
+
+        FileInputFormat.setInputPaths(job,inputPath);
+        FileOutputFormat.setOutputPath(job,outputPath);
+        job.setNumReduceTasks(3);
+        //如果涉及序列化，
+        job.setMapOutputKeyClass(Text.class);
+        job.setMapOutputValueClass(IntWritable.class);
+
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(IntWritable.class);
+
+        job.waitForCompletion(true);
+
+    }
+}
+```
