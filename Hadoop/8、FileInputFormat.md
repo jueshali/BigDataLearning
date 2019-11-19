@@ -7,6 +7,7 @@
     - [KeyValueInputFormat](#keyvalueinputformat)
     - [NLineInputFormat](#nlineinputformat)
     - [CombineTextInputFormat](#combinetextinputformat)
+    - [自定义类继承FileInputFormat](#%e8%87%aa%e5%ae%9a%e4%b9%89%e7%b1%bb%e7%bb%a7%e6%89%bffileinputformat)
 
 ## FileInputFormat切片分析
 
@@ -102,8 +103,9 @@ CombineTextInputFormat可以将多个小文件合并到一个切片中处理！�
 
 （a）判断虚拟存储的文件大小是否大于setMaxInputSplitSize值，大于等于则单独形成一个切片。\
 （b）如果不大于则跟下一个虚拟存储文件进行合并，共同形成一个切片。\
-（c）测试举例：有4个小文件大小分别为1.7M、5.1M、3.4M以及6.8M这四个小文件，则虚拟存储之后形成6个文件块，大小分别为：
-1.7M，（2.55M、2.55M），3.4M以及（3.4M、3.4M）
-最终会形成3个切片，大小分别为：
-（1.7+2.55）M，（2.55+3.4）M，（3.4+3.4）M
 
+RecordReader:  LineRecordReader ： 读取一行作为一个key-value\
+LongWritable：key: 每行的偏移量\
+Text value:  每行的内容
+
+### 自定义类继承FileInputFormat
