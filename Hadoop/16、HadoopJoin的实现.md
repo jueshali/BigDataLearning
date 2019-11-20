@@ -178,6 +178,5 @@ public class JoinMapper extends Mapper<LongWritable, Text,NullWritable ,JoinBean
         outValue.setPname(pdDatas.get(split[1]));
         context.write(NullWritable.get(),outValue);
     }
-
 }
 ```
