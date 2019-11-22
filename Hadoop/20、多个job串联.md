@@ -18,12 +18,12 @@
 
     while (true){
     if(jobControl.allFinished()){
-    List<ControlledJob> successfulJobList = jobControl.getSuccessfulJobList();
+        List<ControlledJob> successfulJobList = jobControl.getSuccessfulJobList();
 
-    break;
-    }
+        break;
+        }
     }
 
 ```
 
-还要注意的是在设置Job2的输入目录时，应设置为job1的输出目录。
+还要注意的是在设置Job2的输入目录时，应设置为job1的输出目录。JobControlTread时一个线程，如果不设置为Daemon，这个线程不会停止。
