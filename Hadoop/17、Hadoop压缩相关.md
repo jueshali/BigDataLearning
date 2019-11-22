@@ -18,3 +18,22 @@ Hadoop框架在运行过程中，能够自动识别文件的扩展名，判断�
 
 ## 可以压缩的三个位置
 
+1. 输入端：直接对将要输入的文件压缩。
+2. Mapper输出端：当数据量过大造成网络传输过多，就可以在Mapper输出端指定压缩技术
+3. Reduce输出端：Reduce端压缩就是为了减少磁盘空间，同时如果有下一个Mapper的话，可以提高效率。
+
+这三个压缩位置可以在Driver中进行配置。
+
+```java
+// 开启map端输出压缩
+configuration.setBoolean("mapreduce.map.output.compress", true);
+// 设置map端输出压缩方式
+configuration.setClass("mapreduce.map.output.compress.codec", BZip2Codec.class, CompressionCodec.class);
+```
+
+```java
+// 设置reduce端输出压缩开启
+FileOutputFormat.setCompressOutput(job, true);
+// 设置压缩的方式
+FileOutputFormat.setOutputCompressorClass(job, BZip2Codec.class); 
+```
