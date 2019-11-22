@@ -6,6 +6,9 @@ Join操作可以将两个或多个文件组合起来，组合的两张表之间�
 
 ReduceJoin的Join操作发生在Reduce端，而Map只需实现文件的读取。
 
+1. 将要进行Join的数据全部再Reducer中完成Join。
+2. 在Mapper封装数据，为要执行Join的数据打标记。
+
 ```java
 package lpc.reduceJoin1;
 
