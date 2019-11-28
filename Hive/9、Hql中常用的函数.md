@@ -300,3 +300,49 @@ SELECT
 *,PERCENT_RANK() OVER(PARTITION by subject order by score DESC)
 FROM score
 ```
+
+## 其他简单函数
+
+### 日期函数
+- Hive默认解析的日期必须是： 2019-11-24 08:09:10，如果不是需要使用regexp_replace()函数进行替换
+- unix_timestamp:返回当前或指定时间的时间戳	unix_timestamp(time) 时间戳
+- from_unixtime：将时间戳转为日期格式
+- current_date：当前日期 
+- current_timestamp：当前的日期加时间
+- to_date：抽取日期部分
+- year：获取年
+- month：获取月
+- day：获取日
+- hour：获取时
+- minute：获取分
+- second：获取秒
+- weekofyear：当前时间是一年中的第几周
+- dayofmonth：当前时间是一个月中的第几天
+- months_between： 两个日期间的月份，前-后
+- add_months：日期加减月
+- datediff：两个日期相差的天数，前-后
+- date_add：日期加天数
+- date_sub：日期减天数
+- last_day：日期的当月的最后一天
+
+### 常用取整函数
+- round： 四舍五入
+- ceil：  向上取整
+- floor： 向下取整
+
+### 常用字符串操作函数
+- upper： 转大写
+- lower： 转小写
+- length： 长度
+- trim：  前后去空格
+- lpad： 向左补齐，到指定长度
+- rpad：  向右补齐，到指定长度
+- regexp_replace： 使用正则表达式匹配目标字符串，匹配成功后替换！
+
+### 集合操作
+- size： 集合中元素的个数
+- map_keys： 返回map中的key select map_keys() from table_name;
+- map_values: 返回map中的value
+- array_contains: 判断array中是否包含某个元素 select arr_contains(arraY_col,"para") from table_name;
+- sort_array： 将array中的元素排序 select 
+
