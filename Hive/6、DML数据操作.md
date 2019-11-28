@@ -63,4 +63,5 @@ insert overwrite local directory "path" select查询语句;
 
 1. export可以将表或分区的数据和元数据一并导出到HDFS的目录中！
 1. 这个目录可以被移动到不同的HDFS或不同的Hive中，再使用import命令将导出的表导入到hive中！
-1. 如果是分区表，支持只导出部分分区！导入和导出和使用的元数据存储的RDMS(数据库)无关！
+1. 如果是分区表，支持只导出部分分区！
+1. 导入和导出和使用的元数据存储的RDMS(数据库)无关！

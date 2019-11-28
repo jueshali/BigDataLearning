@@ -1,0 +1,40 @@
+
+# HQL查询
+
+## 基本查询
+
+```sql
+-- 使用的表名为student,字段有id,nam,age
+
+-- 全表查询
+select * from student;
+
+-- 特定列查询
+select id,name from student;
+
+-- 列别名
+
+select name as stuName from student;
+select name stuName form student;
+
+-- 常用函数
+--- 求行数
+select count(*) nuM from student;
+--- 求最大值
+select max(age) maxAge from student;
+--- 求最小值
+select min(age) minAge from student;
+--- 求总和
+select sum(age) sumAge from student;
+--- 求平均年龄
+select avg(age) avgAge from student;
+
+-- 限制行数
+select * from student limit 4;
+
+-- Where 子句，使用WHERE子句，将不满足条件的行过滤掉。
+select * from student where age >10;
+--- 运算符 [部分]dasdsad
+-- A between B and C, 如果awsdsadsad
+sadas
+```sdasadsadsadas
