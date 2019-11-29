@@ -5,8 +5,6 @@
 --剩余的能量全部用来领取“p002-沙柳”?。
 --统计在10月1日累计申领“p002-沙柳”?排名前10的用户信息；以及他比后一名多领了几颗沙柳。
 
-
-- 日期需要变化吗？
 - 将流水变化为存量
 - 如果存量超过一个杨树的话，存量需要减少一颗杨树的量
 - 计算领取的沙柳数并排序
@@ -41,6 +39,8 @@ user_low_carbon
 需要查询返回满足以上条件的user_low_carbon表中的记录流水。
 例如用户u_002符合条件的记录如下，因为2017/1/2~2017/1/5连续四天的碳排放量之和都大于等于100g：
 
+way 1
+
 ```sql
 SELECT
 user_id,dt,low_car
@@ -56,10 +56,28 @@ datediff(lead(dt,1,dt) OVER(PARTITION by user_id ORDER by dt) ,dt) next1day,
 datediff(lead(dt,2,dt) OVER(PARTITION by user_id ORDER by dt) ,dt) next2day
 FROM
 (SELECT
-user_id,regexp_replace(data_dt,'/','-') dt,sum(low_carbon) sum_carbon,collect_set(low_carbon) collec
+user_id,regexp_replace(data_dt,'/','-') dt,sum(low_carbon) sum_carbon,collect_list(low_carbon) collec
 FROM
 user_low_carbon GROUP BY user_id,data_dt) tmp) tmp2 LATERAL VIEW explode(collec) t as low_car
-WHERE (pre1>=100 AND pre2>=100 AND sum_carbon>=100 AND pre1day=-1 AND pre2day=-2) 
-or (pre1>=100 AND next1>=100 AND sum_carbon>=100 AND pre1day=-1 AND next1day=1) 
-or (next1>=100 AND next2>=100 AND sum_carbon>=100 AND next1day=1 AND next2day=2) 
+WHERE (pre1>=100 AND pre2>100 AND sum_carbon>100 AND pre1day=-1 AND pre2day=-2) 
+or (pre1>=100 AND next1>100 AND sum_carbon>100 AND pre1day=-1 AND next1day=1) 
+or (next1>=100 AND next2>100 AND sum_carbon>100 AND next1day=1 AND next2day=2) 
+```
+
+way2：与方法一相比，就是将连续一天和行数的连续相互关联，两个都是连续的话，相减后的值是相等的，利用group by将他们组合在一起。
+```sql
+SELECT
+user_id,dt,low_car
+FROM
+(SELECT
+user_id,dt, sum_carbon,collec,COUNT(user_id) OVER(PARTITION by user_id,dif_dt) num_sequen
+FROM
+(SELECT
+user_id,dt, sum_carbon,collec,date_sub(dt,ROW_NUMBER() OVER(PARTITION BY user_id order by dt)) dif_dt
+FROM (SELECT
+user_id,regexp_replace(data_dt,'/','-') dt,sum(low_carbon) sum_carbon,collect_set(low_carbon) collec
+FROM
+user_low_carbon 
+GROUP BY user_id,data_dt)t1 WHERE t1.sum_carbon>=100)t2 )t3 LATERAL VIEW explode(collec) t as low_car
+where num_sequen>=3
 ```

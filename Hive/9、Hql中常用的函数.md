@@ -346,3 +346,32 @@ FROM score
 - array_contains: 判断array中是否包含某个元素 select arr_contains(arraY_col,"para") from table_name;
 - sort_array： 将array中的元素排序 select 
 
+## 自己编写函数
+
+编写以下代码，之后打包
+
+```java
+package cn.lpc;
+
+import org.apache.hadoop.hive.ql.exec.UDF;
+
+/**
+ * 项目名：wordcount
+ * 描述：自定义UDF
+ *
+ * 继承udf
+ * 提供evaluate方法
+ * evaluate的返回值不能为空，可以为Null
+ * @author : Lpc
+ * @date : 2019-11-29 18:44
+ **/
+public class MyUdf extends UDF {
+    public String evaluate(String a){
+
+        return a+" hello";
+    }
+
+}
+```
+
+将打的包上传到HIVE_HOME的lib目录下，新建一个hive窗口。使用 create function 函数名 as '函数的全路径例如cn.lpc.MyUdf'.注意添加后该函数在切换数据库后失效。
