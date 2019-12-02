@@ -42,6 +42,7 @@ Hive支持的存储数的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、PARQ
 
 ### Orc格式
 
+Hive中性能最优的文件格式.一般在使用时需要在建表时指定store as orc.默认使用zlib压缩.可以配置使用orc为格式内部使用snppy.配置需要在建表时指定tblproperties('orc.compress'='snappy')
 行列结合，一个ORC由多个stripe组成，若干行分成一个行组，每个行组由stripe footer，Row data和index Data组成。
 
 - stripe footer：存储的是元数据列名，列类型
@@ -54,7 +55,7 @@ Hive支持的存储数的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、PARQ
 
 ### Parquet
 
-Parquet文件是以二进制方式存储的，所以是不可以直接读取的，文件中包括该文件的数据和元数据，因此Parquet格式文件是自解析的。
+在hadoop生态圈都通用的文件格式,Parquet文件是以二进制方式存储的，所以是不可以直接读取的，文件中包括该文件的数据和元数据，因此Parquet格式文件是自解析的。
 
 通常情况下，在存储Parquet数据的时候会按照Block大小设置行组的大小，由于一般情况下每一个Mapper任务处理数据的最小单位是一个Block，这样可以把每一个行组由一个Mapper任务处理，增大任务执行并行度。行组里面按照列式存储。没有索引页，效率比orc要低
 
