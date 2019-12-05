@@ -6,6 +6,15 @@ kafka是一个分布式的基于发布/订阅模式的消息队列，主要应�
 
 kafka具有高容错，高效的特点。
 
+- Publish and subscribe to streams of records, similar to a message queue or enterprise messaging system.
+- Store streams of records in a fault-tolerant durable way.
+- Process streams of records as they occur.
+
+kafka的应用
+
+- Building real-time streaming data pipelines that reliably get data between systems or applications
+- Building real-time streaming applications that transform or react to the streams of data
+
 ## Kafka中的概念
 
 ### Broker
