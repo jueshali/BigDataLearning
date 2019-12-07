@@ -21,23 +21,23 @@ Apache HBase is the Hadoop database, a distributed, scalable, big data store. �
 
 一个列族包含多个列。一个Region包含多个store, 一个列族中的列指示一个store。多个Region构成整个表。
 
-nameSpace:类似于数据库中的库
+nameSpace:类似于数据库中的库，一个nameSpace在HBase中就是一个目录，默认提供了hbase和defalut两个namespace
 
-table:在定义Table时需要定义列族
+table:在定义Table时需要定义列族，类似于表的概念，一个table是hdfs上的namespac下的子目录
 
 row:一行由一个Rowkey和多个列组成
 
 roukey：Row的唯一标识，在排序时会根据rowkey排序，因此要好好配置
 
-Column Faimly :列族
+Column Faimly :列族。是hbase中的基本存储单位，hbase是面向列族存储。列族就是region下的子目录，。在建表时指定列族的名称和属性（）。
 
 Column qualifier:一个列
 
 time stamp:时间戳
 
-cell一个列中可以存储多个版本的数据，每个版本就交一个cell,cell中的数据全部是按照字节码形式存贮的
+cell是一行中可以存储多个版本的数据，每个版本就交一个cell,cell中的数据全部是按照字节码形式存贮的
 
-Region:由一个表的若干行组成，在Region中的排序按照行建字典排序。region是基于HDFS的，他的所有数据存取操作都是调用了HDFS的客户端实现的。多个Region由一个RegionServer进程管理。
+Region:由一个表的若干行组成，在Region中的排序按照行建字典排序。region是基于HDFS的，是table下的一个子目录，多个Region由一个RegionServer进程管理。随着数据的增多，region会自动进行切分
 
 RegionServer:负责管理多个Region的get,put,delete请求。负责ddl语句
 
