@@ -1,0 +1,39 @@
+a1.sources=r1
+a1.channels=c1 c2
+a1.sinks=k1
+
+#配置sources
+a1.sources.r1.type = TAILDIR
+
+a1.sources.r1.positionFile = /opt/module/flume/test/log_position.json
+a1.sources.r1.filegroups = f1
+a1.sources.r1.filegroups.f1 = /tmp/logs/app.+
+a1.sources.r1.fileHeader = true
+
+#配置拦截器
+
+a1.sources.r1.interceptors = i1 
+a1.sources.r1.interceptors.i1.type = cn.lpc.MyInteceptor.MyInterceptor$Builder
+
+
+#配置选择器
+
+a1.sources.r1.selector.type = multiplexing
+a1.sources.r1.selector.header = topic
+a1.sources.r1.selector.mapping.start = c1
+a1.sources.r1.selector.mapping.event = c2
+
+#配置kafkaChannel
+a1.channels.c1.type = org.apache.flume.channel.kafka.KafkaChannel
+a1.channels.c1.kafka.bootstrap.servers = hadoop101:9092,hadoop102:9092,hadoop103:9092
+a1.channels.c1.kafka.topic = start
+a1.channels.c1.kafka.consumer.group.id = flume-consumer
+
+a1.channels.c2.type = org.apache.flume.channel.kafka.KafkaChannel
+a1.channels.c2.kafka.bootstrap.servers = hadoop101:9092,hadoop102:9092,hadoop103:9092
+a1.channels.c2.kafka.topic = event
+a1.channels.c2.kafka.consumer.group.id = flume-consumer
+
+
+# 连接组件
+a1.sources.r1.channels = c1 c2

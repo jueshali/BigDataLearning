@@ -3,6 +3,7 @@ ip 192.168.2.241~192.168.2.244
 namenode hadoop101
 2nn hadoop103
 mr  hadoop102
-root lpc1234
+mysql root 123456 
+virtul address 192.168.6.200
 sudo ntpdate us.pool.ntp.org
 路由密码    123456
