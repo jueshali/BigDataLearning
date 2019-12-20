@@ -67,3 +67,5 @@ Kafka中消息是以topic进行分类的，生产者生产消息，消费者消�
 ### zookeeper在kafka中的作用
 
 Controller的选举以及Controller的管理工作都是基于zookeeper的
+
+<IMG src="file:///C:\Users\Administrator\AppData\Roaming\feiq\RichOle\1311800153.bmp">
