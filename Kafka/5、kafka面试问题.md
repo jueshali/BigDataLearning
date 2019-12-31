@@ -131,3 +131,6 @@ TopicPartition tp = null;
     2. 分区
     3. 0复制
     4. 分页
+
+21. Kafka分区保证顺序
+    使用Deque=>在发送B时发生错误，在回滚时从头部写入                                                              
