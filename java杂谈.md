@@ -144,3 +144,35 @@ int拆箱时会导致空指针异常
 工厂模式：
 
 将对象要被回收时被调用的方法finalize()
+
+```java
+
+// Java中泛型不可变，泛型其实就是对数据类型的约束，但是泛型无法对声明之前的数据类型做约束，只能对声明之后数据起约束，泛型再进行类型操作时才会操作，如果不进行类型操作，那么就不会有问题。例如print方法中不可能出现类型的错误
+
+// 类型使用的上线，不能用T的父类，能用T和T的字类
+public static <T> void test(T t){
+  System.out.println(t);
+}
+ 
+//类型使用的上限
+public static <T extends UserTest> void test(T t){
+  System.out.println(t);
+}
+
+// 类型使用的下限，不能使用T的子类
+public static void test(Class <? super UserTest> c){
+  System.out.println(c);
+}
+
+// 类型使用的上限，不能使用T的父类类
+public static void test(Class <? extends UserTest> c){
+  System.out.println(c);
+}
+
+```
+
+
+进程和进程的通信
+
+RPC =>  Process <-> Process
+RMI远程方法调用=> EJB
