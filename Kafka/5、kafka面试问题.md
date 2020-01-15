@@ -134,3 +134,6 @@ TopicPartition tp = null;
 
 21. Kafka分区保证顺序
     使用Deque=>在发送B时发生错误，在回滚时从头部写入                                                              
+
+22. kafka的key为null
+    分区均匀
